@@ -9,56 +9,64 @@
 <body>
   <div class="page">
     <header>
-      <h1>Red Hat Certification Puzzle</h1>
-      <p>適切な認定資格をドラッグ＆ドロップして、RHCSA / RHCE / RHCA のランプを光らせよう。</p>
+      <h1>RHEL Certification Puzzle</h1>
+      <p>RHEL 認定資格トラックの試験ブロックをドラッグし、レベル条件を満たしてランプを点灯させよう。</p>
     </header>
 
     <section class="game-panel">
       <div class="panel">
-        <h2>認定資格</h2>
+        <h2>RHEL 試験ブロック</h2>
+        <p class="panel-description">EX200 から各種スペシャリスト試験まで、適切なブロックをターゲットエリアに入れてください。</p>
         <div id="draggable-list" class="drag-list"></div>
       </div>
 
       <div class="panel targets-panel">
-        <h2>配置エリア</h2>
-        <div class="targets">
-          <div class="target-card">
-            <div class="target-title">基本資格</div>
-            <div class="drop-target" data-answer="RHCSA">Drop here</div>
+        <h2>RHEL 認定ターゲット</h2>
+        <div class="target-card">
+          <div class="target-title">ここに認定試験ブロックをすべて入れてください</div>
+          <div class="drop-target" id="main-drop-zone">
+            <div class="drop-placeholder">EX200 などの試験ブロックをドラッグしてください</div>
           </div>
-          <div class="target-card">
-            <div class="target-title">上級資格</div>
-            <div class="drop-target" data-answer="RHCE">Drop here</div>
-          </div>
-          <div class="target-card">
-            <div class="target-title">アーキテクト</div>
-            <div class="drop-target" data-answer="RHCA">Drop here</div>
-          </div>
+        </div>
+        <div class="hint-box">
+          <p>Level 1: EX200</p>
+          <p>Level 2: EX200 + EX342</p>
+          <p>Level 3: EX200 + EX342 + 1 つのスペシャリスト試験</p>
+          <p>Level 4: EX200 + EX342 + 2 つのスペシャリスト試験</p>
+          <p>Level 5: EX200 + EX342 + 3 つのスペシャリスト試験</p>
         </div>
       </div>
     </section>
 
     <section class="lamps">
       <div class="lamp-card">
-        <div class="lamp-label">RHCSA</div>
-        <div id="lamp-rhcsa" class="lamp off">OFF</div>
+        <div class="lamp-label">Level 1</div>
+        <div id="lamp-l1" class="lamp off">OFF</div>
       </div>
       <div class="lamp-card">
-        <div class="lamp-label">RHCE</div>
-        <div id="lamp-rhce" class="lamp off">OFF</div>
+        <div class="lamp-label">Level 2</div>
+        <div id="lamp-l2" class="lamp off">OFF</div>
       </div>
       <div class="lamp-card">
-        <div class="lamp-label">RHCA</div>
-        <div id="lamp-rhca" class="lamp off">OFF</div>
+        <div class="lamp-label">Level 3</div>
+        <div id="lamp-l3" class="lamp off">OFF</div>
+      </div>
+      <div class="lamp-card">
+        <div class="lamp-label">Level 4</div>
+        <div id="lamp-l4" class="lamp off">OFF</div>
+      </div>
+      <div class="lamp-card">
+        <div class="lamp-label">Level 5</div>
+        <div id="lamp-l5" class="lamp off">OFF</div>
       </div>
     </section>
 
     <section class="info-panel">
-      <h2>動作</h2>
+      <h2>遊び方</h2>
       <ul>
-        <li>プレイヤーは資格カードをドラッグして、対応する配置エリアへ置きます。</li>
-        <li>正しいカードを配置すると、該当ランプが点灯します。</li>
-        <li>RHCSA/RHCE/RHCA を正しく揃えると、3つのランプが全て光ります。</li>
+        <li>試験ブロックをドラッグしてターゲットエリアに追加します。</li>
+        <li>必要な組み合わせを揃えると、対応する Level ランプが点灯します。</li>
+        <li>Level 3 以上は、EX200 と EX342 に加えてスペシャリスト試験を複数選択します。</li>
       </ul>
     </section>
   </div>

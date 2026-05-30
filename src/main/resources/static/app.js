@@ -1,18 +1,24 @@
 const certifications = [
-  { id: 'RHCSA', label: 'RHCSA', description: 'Red Hat Certified System Administrator' },
-  { id: 'RHCE', label: 'RHCE', description: 'Red Hat Certified Engineer' },
-  { id: 'RHCA', label: 'RHCA', description: 'Red Hat Certified Architect' },
-  { id: 'RHTS', label: 'Red Hat Certified Specialist', description: 'Specialist Certification' },
-  { id: 'RHCE-ADV', label: 'Red Hat Certified Expert', description: 'Expert Certification' },
-  { id: 'RHCA-TECH', label: 'Red Hat Certified Architect (技術系)', description: 'Architect Specialty' }
+  { id: 'EX200', label: 'EX200', description: 'Red Hat Certified System Administrator (RHCSA)' },
+  { id: 'EX342', label: 'EX342', description: 'Red Hat Certified Engineer (RHCE)' },
+  { id: 'EX210', label: 'EX210', description: 'Red Hat Certified Specialist in Cloud Infrastructure' },
+  { id: 'EX260', label: 'EX260', description: 'Red Hat Certified Specialist in Ceph Cloud Storage' },
+  { id: 'EX358', label: 'EX358', description: 'Red Hat Certified Specialist in Services Management and Automation' },
+  { id: 'EX362', label: 'EX362', description: 'Red Hat Certified Specialist in Identity Management' },
+  { id: 'EX403', label: 'EX403', description: 'Red Hat Certified Specialist in Deployment and Systems Management' },
+  { id: 'EX415', label: 'EX415', description: 'Red Hat Certified Specialist in Security: Linux' },
+  { id: 'EX436', label: 'EX436', description: 'Red Hat Certified Specialist in High Availability Clustering' },
+  { id: 'EX442', label: 'EX442', description: 'Red Hat Certified Specialist in Performance Tuning' }
 ];
 
 const list = document.getElementById('draggable-list');
-const targets = document.querySelectorAll('.drop-target');
+const mainTarget = document.getElementById('main-drop-zone');
 const lamps = {
-  RHCSA: document.getElementById('lamp-rhcsa'),
-  RHCE: document.getElementById('lamp-rhce'),
-  RHCA: document.getElementById('lamp-rhca')
+  l1: document.getElementById('lamp-l1'),
+  l2: document.getElementById('lamp-l2'),
+  l3: document.getElementById('lamp-l3'),
+  l4: document.getElementById('lamp-l4'),
+  l5: document.getElementById('lamp-l5')
 };
 
 let draggedItem = null;
@@ -22,7 +28,7 @@ function createCard(item) {
   card.className = 'card';
   card.draggable = true;
   card.id = item.id;
-  card.textContent = `${item.label} — ${item.description}`;
+  card.textContent = `${item.id}: ${item.description}`;
 
   card.addEventListener('dragstart', () => {
     draggedItem = card;
@@ -41,11 +47,26 @@ function populateList() {
   certifications.forEach(item => list.appendChild(createCard(item)));
 }
 
+function getPlacedIds() {
+  return Array.from(mainTarget.querySelectorAll('.card')).map(card => card.id);
+}
+
 function updateLamps() {
-  const placedValues = Array.from(targets).map(target => target.dataset.current);
-  Object.keys(lamps).forEach(key => {
-    const lamp = lamps[key];
-    if (placedValues.includes(key)) {
+  const placedIds = getPlacedIds();
+  const hasEX200 = placedIds.includes('EX200');
+  const hasEX342 = placedIds.includes('EX342');
+  const specialistCount = placedIds.filter(id => id !== 'EX200' && id !== 'EX342').length;
+
+  const states = {
+    l1: hasEX200,
+    l2: hasEX200 && hasEX342,
+    l3: hasEX200 && hasEX342 && specialistCount >= 1,
+    l4: hasEX200 && hasEX342 && specialistCount >= 2,
+    l5: hasEX200 && hasEX342 && specialistCount >= 3
+  };
+
+  Object.entries(lamps).forEach(([key, lamp]) => {
+    if (states[key]) {
       lamp.classList.add('on');
       lamp.classList.remove('off');
       lamp.textContent = 'ON';
@@ -61,25 +82,45 @@ function allowDrop(event) {
   event.preventDefault();
 }
 
+function ensurePlaceholder() {
+  if (!mainTarget.querySelector('.card')) {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'drop-placeholder';
+    placeholder.textContent = 'EX200 などの試験ブロックをドラッグしてください';
+    mainTarget.innerHTML = '';
+    mainTarget.appendChild(placeholder);
+    mainTarget.classList.remove('filled');
+  }
+}
+
+function removePlaceholder(target) {
+  const placeholder = target.querySelector('.drop-placeholder');
+  if (placeholder) {
+    placeholder.remove();
+  }
+}
+
 function handleDrop(event) {
   event.preventDefault();
   const target = event.currentTarget;
   if (!draggedItem) return;
 
-  const existing = target.querySelector('.card');
-  if (existing) {
-    list.appendChild(existing);
+  if (target === list) {
+    list.appendChild(draggedItem);
+    ensurePlaceholder();
+    updateLamps();
+    return;
   }
 
-  target.textContent = '';
+  removePlaceholder(target);
   target.appendChild(draggedItem);
   target.classList.add('filled');
-  target.dataset.current = draggedItem.id;
   updateLamps();
 }
 
 function setupDropTargets() {
-  targets.forEach(target => {
+  const dropZones = [mainTarget, list];
+  dropZones.forEach(target => {
     target.addEventListener('dragover', allowDrop);
     target.addEventListener('dragenter', () => target.classList.add('over'));
     target.addEventListener('dragleave', () => target.classList.remove('over'));

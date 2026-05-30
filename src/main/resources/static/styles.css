@@ -57,6 +57,12 @@ p {
   padding: 20px;
 }
 
+.panel-description {
+  margin: 0 0 16px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .targets-panel {
   display: flex;
   flex-direction: column;
@@ -64,14 +70,14 @@ p {
 
 .drag-list {
   display: grid;
-  gap: 16px;
+  gap: 14px;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 14px;
-  padding: 16px;
+  padding: 18px 16px;
   cursor: grab;
   user-select: none;
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
@@ -83,48 +89,110 @@ p {
 }
 
 .card.dragging {
-  opacity: 0.5;
-}
-
-.targets {
-  display: grid;
-  gap: 16px;
+  opacity: 0.45;
 }
 
 .target-card {
   display: grid;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.04);
+  gap: 16px;
+  padding: 14px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .target-title {
-  font-weight: 600;
+  font-weight: 700;
   color: #f8fafc;
 }
 
 .drop-target {
-  min-height: 86px;
-  border: 2px dashed rgba(255, 255, 255, 0.2);
-  border-radius: 18px;
+  min-height: 300px;
+  border: 2px dashed rgba(255, 255, 255, 0.24);
+  border-radius: 22px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 18px;
   color: var(--muted);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.02);
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .drop-target.over {
   border-color: var(--accent);
-  background: rgba(201, 25, 11, 0.1);
+  background: rgba(201, 25, 11, 0.12);
 }
 
 .drop-target.filled {
   border-style: solid;
   border-color: rgba(60, 186, 84, 0.8);
+}
+
+.drop-placeholder {
+  flex: 1 1 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+}
+
+.hint-box {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.lamps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.lamp-card {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 18px;
+}
+
+.lamp-label {
+  margin-bottom: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.lamp {
+  width: 100%;
+  padding: 20px 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.lamp.on {
+  background: var(--success);
+  color: #071908;
+}
+
+@media (max-width: 900px) {
+  .game-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .lamps {
+    grid-template-columns: 1fr;
+  }
 }
 
 .lamps {
