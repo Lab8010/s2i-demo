@@ -123,9 +123,10 @@ body {
 
 .game-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 360px);
+  grid-template-columns: 1fr;
   gap: 20px;
   align-items: stretch;
+  position: relative;
 }
 
 .panel,
@@ -163,16 +164,25 @@ body {
   border: 1px solid rgba(221, 37, 37, 0.18);
 }
 
-.panel-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
+
 
 .exam-list-panel,
 .target-panel {
   display: grid;
   gap: 16px;
+}
+
+.exam-list-panel {
+  max-width: 320px;
+}
+
+.target-panel {
+  flex: 1;
+}
+
+.panel-grid {
+  display: flex;
+  gap: 18px;
 }
 
 .exam-list-panel h3,
@@ -184,8 +194,8 @@ body {
 
 .drag-list {
   display: grid;
-  gap: 12px;
-  max-height: 360px;
+  gap: 10px;
+  max-height: 480px;
   overflow-y: auto;
   padding-right: 4px;
 }
@@ -258,14 +268,20 @@ body {
   color: var(--muted);
 }
 
-.hint-box {
-  padding: 16px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--muted);
-  line-height: 1.7;
+.cert-link {
+  margin: 12px 0 0;
   font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.cert-link a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.cert-link a:hover {
+  opacity: 0.8;
 }
 
 .lamps {

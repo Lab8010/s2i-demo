@@ -173,7 +173,28 @@ function moveCardBack(card) {
   if (removeButton) {
     removeButton.style.display = 'none';
   }
-  list.appendChild(card);
+  
+  // Find the correct position to insert the card to maintain sorted order
+  const track = tracks[activeTrack];
+  const sortedExams = sortExams(track.exams);
+  const cardExamIndex = sortedExams.findIndex(e => e.id === card.id);
+  
+  const existingCards = Array.from(list.querySelectorAll('.card'));
+  let inserted = false;
+  
+  for (const existingCard of existingCards) {
+    const existingExamIndex = sortedExams.findIndex(e => e.id === existingCard.id);
+    if (cardExamIndex < existingExamIndex) {
+      list.insertBefore(card, existingCard);
+      inserted = true;
+      break;
+    }
+  }
+  
+  if (!inserted) {
+    list.appendChild(card);
+  }
+  
   ensurePlaceholder();
   updateLamps();
 }
