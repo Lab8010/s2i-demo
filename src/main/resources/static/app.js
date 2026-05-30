@@ -28,7 +28,23 @@ function createCard(item) {
   card.className = 'card';
   card.draggable = true;
   card.id = item.id;
-  card.textContent = `${item.id}: ${item.description}`;
+
+  const label = document.createElement('div');
+  label.textContent = `${item.id}: ${item.description}`;
+  label.className = 'card-label';
+
+  const removeButton = document.createElement('button');
+  removeButton.className = 'remove-button';
+  removeButton.type = 'button';
+  removeButton.textContent = 'Remove';
+  removeButton.style.display = 'none';
+  removeButton.addEventListener('click', event => {
+    event.stopPropagation();
+    moveCardBack(card);
+  });
+
+  card.appendChild(label);
+  card.appendChild(removeButton);
 
   card.addEventListener('dragstart', () => {
     draggedItem = card;
@@ -100,20 +116,32 @@ function removePlaceholder(target) {
   }
 }
 
+function moveCardBack(card) {
+  const removeButton = card.querySelector('.remove-button');
+  if (removeButton) {
+    removeButton.style.display = 'none';
+  }
+  list.appendChild(card);
+  ensurePlaceholder();
+  updateLamps();
+}
+
 function handleDrop(event) {
   event.preventDefault();
   const target = event.currentTarget;
   if (!draggedItem) return;
 
   if (target === list) {
-    list.appendChild(draggedItem);
-    ensurePlaceholder();
-    updateLamps();
+    moveCardBack(draggedItem);
     return;
   }
 
   removePlaceholder(target);
   target.appendChild(draggedItem);
+  const removeButton = draggedItem.querySelector('.remove-button');
+  if (removeButton) {
+    removeButton.style.display = 'inline-flex';
+  }
   target.classList.add('filled');
   updateLamps();
 }
