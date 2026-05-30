@@ -10,9 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api")
 public class HelloController {
 
-    @GetMapping("/")
+    @GetMapping("/info")
     public Map<String, String> hello() throws Exception {
         Map<String, String> response = new HashMap<>();
         response.put("message", "Hello from OpenShift S2I Demo!");
