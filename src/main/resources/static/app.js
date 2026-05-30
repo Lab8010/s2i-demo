@@ -1,15 +1,46 @@
-const certifications = [
-  { id: 'EX200', label: 'EX200', description: 'Red Hat Certified System Administrator (RHCSA)' },
-  { id: 'EX342', label: 'EX342', description: 'Red Hat Certified Engineer (RHCE)' },
-  { id: 'EX210', label: 'EX210', description: 'Red Hat Certified Specialist in Cloud Infrastructure' },
-  { id: 'EX260', label: 'EX260', description: 'Red Hat Certified Specialist in Ceph Cloud Storage' },
-  { id: 'EX358', label: 'EX358', description: 'Red Hat Certified Specialist in Services Management and Automation' },
-  { id: 'EX362', label: 'EX362', description: 'Red Hat Certified Specialist in Identity Management' },
-  { id: 'EX403', label: 'EX403', description: 'Red Hat Certified Specialist in Deployment and Systems Management' },
-  { id: 'EX415', label: 'EX415', description: 'Red Hat Certified Specialist in Security: Linux' },
-  { id: 'EX436', label: 'EX436', description: 'Red Hat Certified Specialist in High Availability Clustering' },
-  { id: 'EX442', label: 'EX442', description: 'Red Hat Certified Specialist in Performance Tuning' }
-];
+const tracks = {
+  RHEL: {
+    label: 'RHEL',
+    description: 'EX200 / EX342 とスペシャリスト試験を組み合わせて RHEL レベルを達成します。',
+    available: true,
+    exams: [
+      { id: 'EX200', description: 'Red Hat Certified System Administrator (RHCSA)' },
+      { id: 'EX210', description: 'Red Hat Certified Specialist in Cloud Infrastructure' },
+      { id: 'EX260', description: 'Red Hat Certified Specialist in Ceph Cloud Storage' },
+      { id: 'EX342', description: 'Red Hat Certified Engineer (RHCE)' },
+      { id: 'EX358', description: 'Red Hat Certified Specialist in Services Management and Automation' },
+      { id: 'EX362', description: 'Red Hat Certified Specialist in Identity Management' },
+      { id: 'EX403', description: 'Red Hat Certified Specialist in Deployment and Systems Management' },
+      { id: 'EX415', description: 'Red Hat Certified Specialist in Security: Linux' },
+      { id: 'EX436', description: 'Red Hat Certified Specialist in High Availability Clustering' },
+      { id: 'EX442', description: 'Red Hat Certified Specialist in Performance Tuning' }
+    ]
+  },
+  OpenShift: {
+    label: 'OpenShift',
+    description: 'OpenShift トラックは準備中です。',
+    available: false,
+    exams: []
+  },
+  Ansible: {
+    label: 'Ansible',
+    description: 'Ansible トラックは準備中です。',
+    available: false,
+    exams: []
+  },
+  'Cloud Native': {
+    label: 'Cloud Native',
+    description: 'Cloud Native トラックは準備中です。',
+    available: false,
+    exams: []
+  },
+  AI: {
+    label: 'AI',
+    description: 'AI トラックは準備中です。',
+    available: false,
+    exams: []
+  }
+};
 
 const list = document.getElementById('draggable-list');
 const mainTarget = document.getElementById('main-drop-zone');
@@ -20,8 +51,13 @@ const lamps = {
   l4: document.getElementById('lamp-l4'),
   l5: document.getElementById('lamp-l5')
 };
+const trackButtons = document.querySelectorAll('.track-button');
+const trackTitle = document.getElementById('track-title');
+const trackDescription = document.getElementById('track-description');
+const trackStatus = document.getElementById('track-status');
 
 let draggedItem = null;
+let activeTrack = 'RHEL';
 
 function createCard(item) {
   const card = document.createElement('div');
@@ -59,8 +95,22 @@ function createCard(item) {
   return card;
 }
 
+function sortExams(exams) {
+  return exams.slice().sort((a, b) => {
+    const numA = parseInt(a.id.replace(/[^0-9]/g, ''), 10);
+    const numB = parseInt(b.id.replace(/[^0-9]/g, ''), 10);
+    return numA - numB;
+  });
+}
+
 function populateList() {
-  certifications.forEach(item => list.appendChild(createCard(item)));
+  list.innerHTML = '';
+  const track = tracks[activeTrack];
+  if (!track.available) {
+    return;
+  }
+
+  sortExams(track.exams).forEach(item => list.appendChild(createCard(item)));
 }
 
 function getPlacedIds() {
@@ -102,7 +152,9 @@ function ensurePlaceholder() {
   if (!mainTarget.querySelector('.card')) {
     const placeholder = document.createElement('div');
     placeholder.className = 'drop-placeholder';
-    placeholder.textContent = 'EX200 などの試験ブロックをドラッグしてください';
+    placeholder.textContent = tracks[activeTrack].available
+      ? 'EX200 などの試験ブロックをドラッグしてください'
+      : 'このトラックは Coming Soon です。別のトラックをお試しください。';
     mainTarget.innerHTML = '';
     mainTarget.appendChild(placeholder);
     mainTarget.classList.remove('filled');
@@ -146,6 +198,22 @@ function handleDrop(event) {
   updateLamps();
 }
 
+function setTrack(trackId) {
+  activeTrack = trackId;
+  trackButtons.forEach(button => {
+    button.classList.toggle('active', button.dataset.track === trackId);
+  });
+
+  trackTitle.textContent = `${tracks[trackId].label} Track`;
+  trackDescription.textContent = tracks[trackId].description;
+  trackStatus.textContent = tracks[trackId].available ? 'Available' : 'Coming Soon';
+
+  Array.from(mainTarget.querySelectorAll('.card')).forEach(card => list.appendChild(card));
+  populateList();
+  ensurePlaceholder();
+  updateLamps();
+}
+
 function setupDropTargets() {
   const dropZones = [mainTarget, list];
   dropZones.forEach(target => {
@@ -156,6 +224,10 @@ function setupDropTargets() {
       target.classList.remove('over');
       handleDrop(event);
     });
+  });
+
+  trackButtons.forEach(button => {
+    button.addEventListener('click', () => setTrack(button.dataset.track));
   });
 }
 

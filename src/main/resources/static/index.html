@@ -8,38 +8,63 @@
 </head>
 <body>
   <div class="page">
-    <header>
-      <h1>RHEL Certification Puzzle</h1>
-      <p>RHEL 認定資格トラックの試験ブロックをドラッグし、レベル条件を満たしてランプを点灯させよう。</p>
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">RHEL Certification Track</p>
+        <h1>Red Hat Certified Exam Puzzle</h1>
+        <p class="hero-description">EX コードの試験ブロックをドラッグして、RHEL レベル条件を満たしましょう。OpenShift / Ansible / Cloud Native / AI トラックは Coming Soon。</p>
+      </div>
+      <div class="hero-badge">
+        <span>RHEL</span>
+      </div>
     </header>
 
-    <section class="game-panel">
-      <div class="panel">
-        <h2>RHEL 試験ブロック</h2>
-        <p class="panel-description">EX200 から各種スペシャリスト試験まで、適切なブロックをターゲットエリアに入れてください。</p>
-        <div id="draggable-list" class="drag-list"></div>
-      </div>
+    <nav class="track-nav">
+      <button class="track-button active" data-track="RHEL">RHEL</button>
+      <button class="track-button" data-track="OpenShift">OpenShift <span>Coming Soon</span></button>
+      <button class="track-button" data-track="Ansible">Ansible <span>Coming Soon</span></button>
+      <button class="track-button" data-track="Cloud Native">Cloud Native <span>Coming Soon</span></button>
+      <button class="track-button" data-track="AI">AI <span>Coming Soon</span></button>
+    </nav>
 
-      <div class="panel targets-panel">
-        <h2>RHEL 認定ターゲット</h2>
-        <div class="target-card">
-          <div class="target-title">ここに認定試験ブロックをすべて入れてください</div>
-          <div class="drop-target" id="main-drop-zone">
-            <div class="drop-placeholder">EX200 などの試験ブロックをドラッグしてください</div>
+    <section class="game-layout">
+      <div class="panel main-panel">
+        <div class="panel-header">
+          <div>
+            <h2 id="track-title">RHEL Track</h2>
+            <p id="track-description">EX200 / EX342 とスペシャリスト試験を組み合わせて、Level 1〜5 を達成します。</p>
           </div>
+          <div class="track-status" id="track-status">Available</div>
         </div>
-        <div class="hint-box">
-          <p>Level 1: EX200</p>
-          <p>Level 2: EX200 + EX342</p>
-          <p>Level 3: EX200 + EX342 + 1 つのスペシャリスト試験</p>
-          <p>Level 4: EX200 + EX342 + 2 つのスペシャリスト試験</p>
-          <p>Level 5: EX200 + EX342 + 3 つのスペシャリスト試験</p>
+
+        <div class="panel-grid">
+          <div class="exam-list-panel">
+            <h3>Exam Blocks</h3>
+            <div id="draggable-list" class="drag-list"></div>
+          </div>
+
+          <div class="target-panel">
+            <h3>Drop Target</h3>
+            <div class="target-card">
+              <div class="target-title">試験ブロックをここに入れてください</div>
+              <div class="drop-target" id="main-drop-zone">
+                <div class="drop-placeholder">EX200 などの試験ブロックをドラッグしてください</div>
+              </div>
+            </div>
+            <div class="hint-box">
+              <p>Level 1: EX200</p>
+              <p>Level 2: EX200 + EX342</p>
+              <p>Level 3: EX200 + EX342 + 1 スペシャリスト</p>
+              <p>Level 4: EX200 + EX342 + 2 スペシャリスト</p>
+              <p>Level 5: EX200 + EX342 + 3 スペシャリスト</p>
+            </div>
+          </div>
         </div>
       </div>
 
       <aside class="status-panel">
         <div class="status-card">
-          <h2>Level Status</h2>
+          <h3>Level Status</h3>
           <div class="lamps">
             <div class="lamp-card">
               <div class="lamp-label">Level 1</div>
@@ -64,15 +89,6 @@
           </div>
         </div>
       </aside>
-    </section>
-
-    <section class="info-panel">
-      <h2>遊び方</h2>
-      <ul>
-        <li>試験ブロックをドラッグしてターゲットエリアに追加します。</li>
-        <li>必要な組み合わせを揃えると、対応する Level ランプが点灯します。</li>
-        <li>Level 3 以上は、EX200 と EX342 に加えてスペシャリスト試験を複数選択します。</li>
-      </ul>
     </section>
   </div>
 
